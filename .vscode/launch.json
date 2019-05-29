@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - epcoo",
+            "request": "launch",
+            "mainClass": "epcoo",
+            "projectName": "COO_cf9f3f90"
+        }
+    ]
+}
