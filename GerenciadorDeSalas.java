@@ -30,7 +30,7 @@ class GerenciadorDeSalas {
                 System.out.println("Reservou");
             }
         }
-
+        this.reservas.add(reserva);
         return reserva;
     }
 
