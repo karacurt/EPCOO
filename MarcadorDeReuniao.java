@@ -30,8 +30,8 @@ class MarcadorDeReuniao {
     }
 
     public void mostrarSobreposicao() {
-        TreeSet<Node> teste = (TreeSet) this.horarios.descendingSet();
-        Iterator iterador = teste.iterator();
+        TreeSet<Node> horarios = (TreeSet<Node>) this.horarios.descendingSet();
+        Iterator<Node> iterador = horarios.iterator();
         int i = 0;
 
         while (iterador.hasNext()) {

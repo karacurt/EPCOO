@@ -30,6 +30,8 @@ public class Main {
             }
         }
 
+        sc.close();
+
     }
 
     public static void MarcadorDeReuniao() {
@@ -92,6 +94,7 @@ public class Main {
         }
 
         marcador.mostrarSobreposicao();
+        sc.close();
     }
 
     public static void GerenciadorDeSalas() {
@@ -216,6 +219,7 @@ public class Main {
                 break;
             default:
                 System.out.println("Opcao invalida");
+                sc.close();
             }
 
         }
