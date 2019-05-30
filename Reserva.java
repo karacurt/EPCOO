@@ -4,9 +4,10 @@ class Reserva implements Comparable<Reserva> {
     protected LocalDateTime dtInit, dtFinal;
     protected Sala sala;
 
-    Reserva(LocalDateTime dtInit, LocalDateTime dtFinal) {
+    Reserva(Sala sala, LocalDateTime dtInit, LocalDateTime dtFinal) {
         this.dtInit = dtInit;
         this.dtFinal = dtFinal;
+        this.sala = sala;
     }
 
     public int compareTo(Reserva reserva) {
@@ -19,11 +20,6 @@ class Reserva implements Comparable<Reserva> {
         } else {
             return 2;
         }
-    }
-
-    // SETTERS
-    void setSala(Sala sala) {
-        this.sala = sala;
     }
 
     // GETTERS

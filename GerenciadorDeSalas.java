@@ -9,7 +9,7 @@ class GerenciadorDeSalas {
 
     // SETTERS
     void adicionaSalaChamada(String nomeSala, int maxCapacity) {
-        this.salas.add(new Sala(nomeSala, maxCapacity));
+        this.adicionaSala(new Sala(nomeSala, maxCapacity));
     }
 
     void adicionaSala(Sala sala) {
@@ -21,7 +21,18 @@ class GerenciadorDeSalas {
         return this.salas;
     }
 
-    // CONTROLERS
+    Reserva reservaSalaChamada(String nomeSala, LocalDateTime dtInit, LocalDateTime dtFinal) {
+        Reserva reserva = null;
+
+        for (Sala sala : this.salas) {
+            if (sala.getNome().equals(nomeSala)) {
+                reserva = sala.reservar(dtInit, dtFinal);
+                System.out.println("Reservou");
+            }
+        }
+
+        return reserva;
+    }
 
     String removeSalaChamada(String nomeSala) {
         for (Sala sala : this.salas) {
@@ -33,24 +44,24 @@ class GerenciadorDeSalas {
         return "Sala não encontrada";
     }
 
-    Reserva reservaSalaChamada(String nomeSala, LocalDateTime dtInit, LocalDateTime dtFinal) {
-        Reserva reserva = null;
+    // CONTROLERS
 
-        for (Sala sala : this.salas) {
-            if (sala.getNome().equals(nomeSala)) {
-                reserva = sala.reservar(dtInit, dtFinal);
-                System.out.println("Reservou");
-            }
+    void cancelaReserva(Reserva value) {
+        if (reservas.contains(value)) {
+            value.getSala().reservasParaSala().remove(value);
+            reservas.remove(value);
         }
-        return reserva;
-    }
-
-    void cancelaReserva(Reserva reserva) {
-
     }
 
     void imprimeReservasDaSala(Sala sala) {
-        sala.imprime();
+        int n = 1;
+        System.out.println("*********** SALA  " + sala.getNome() + " **********");
+        for (Reserva reserva : sala.reservas) {
+            System.out.println("======== RESERVA " + n + " ===========");
+            System.out.println("Inicio: " + reserva.getDtInit());
+            System.out.println("Termino: " + reserva.getDtFinal());
+            n++;
+        }
     }
 
 }
