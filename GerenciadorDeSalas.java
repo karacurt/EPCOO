@@ -26,11 +26,16 @@ class GerenciadorDeSalas {
 
         for (Sala sala : this.salas) {
             if (sala.getNome().equals(nomeSala)) {
+                imprimeReservasDaSala(sala);
                 reserva = sala.reservar(dtInit, dtFinal);
+                imprimeReservasDaSala(sala);
                 System.out.println("Reservou");
             }
         }
-        this.reservas.add(reserva);
+        if (reserva == null)
+            System.out.println("Horario nao disponivel");
+        else
+            this.reservas.add(reserva);
         return reserva;
     }
 
@@ -62,6 +67,8 @@ class GerenciadorDeSalas {
             System.out.println("Termino: " + reserva.getDtFinal());
             n++;
         }
+        if (!sala.reservas.iterator().hasNext())
+            System.out.println("Sem reservas");
     }
 
 }

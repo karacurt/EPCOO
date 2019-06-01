@@ -10,12 +10,12 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        for (int op = 0; op != -1;) {
+        for (int op = -1; op != 0;) {
 
             System.out.println("=============== MENU ================");
             System.out.println("1 - Marcador de Reuniao");
             System.out.println("2 - Gerenciador de Salas");
-            System.out.println("-1 - Sair");
+            System.out.println("0 - Sair");
             op = sc.nextInt();
 
             switch (op) {
@@ -105,7 +105,7 @@ public class Main {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         GerenciadorDeSalas gerenciador = new GerenciadorDeSalas();
 
-        for (int op = 0; op != -1;) {
+        for (int op = -1; op != 0;) {
 
             System.out.println("=============== MENU ================");
             System.out.println("1 - Adicionar sala");
@@ -113,10 +113,17 @@ public class Main {
             System.out.println("3 - Reservar sala");
             System.out.println("4 - Cancelar reserva");
             System.out.println("5 - Exibir reservas da Sala");
-            System.out.println("-1 - Sair");
-            op = sc.nextInt();
+            System.out.println("6 - Imprimir Salas");
+            System.out.println("0 - Sair");
+            op = Integer.parseInt(sc.nextLine());
 
             switch (op) {
+
+            case 6:
+                for (Sala sala : gerenciador.salas) {
+                    gerenciador.imprimeReservasDaSala(sala);
+                }
+                break;
 
             case 1:
                 for (String x = ""; !x.toUpperCase().equals("N");) {
@@ -124,12 +131,13 @@ public class Main {
                     String nomeSala = sc.nextLine();
 
                     System.out.print("Capacidade: ");
-                    int capacidade = sc.nextInt();
+                    int capacidade = Integer.parseInt(sc.nextLine());
 
                     gerenciador.adicionaSalaChamada(nomeSala, capacidade);
 
                     System.out.print("Inserir outra Sala? (S - Sim, N - Nao): ");
                     x = sc.nextLine();
+                    System.out.println();
                 }
                 break;
             case 2:
@@ -142,6 +150,7 @@ public class Main {
 
                     System.out.print("Remover outra sala? (S - Sim, N - Nao): ");
                     x = sc.nextLine();
+                    System.out.println();
                 }
                 break;
 
@@ -153,21 +162,22 @@ public class Main {
                     String nomeSala = sc.nextLine();
 
                     System.out.print("Data (dd/mm/yyyy): ");
-                    String data = sc.nextLine() + " ";
+                    String data = sc.next() + " ";
 
                     System.out.print("De (hh:mm): ");
-                    String hrInit = sc.nextLine();
+                    String hrInit = sc.next();
                     LocalDateTime dtInit = LocalDateTime.parse(data + hrInit, formatter);
 
                     System.out.print("Até (hh:mm): ");
-                    String hrFinal = sc.nextLine();
+                    String hrFinal = sc.next();
                     LocalDateTime dtFinal = LocalDateTime.parse(data + hrFinal, formatter);
 
                     // Adiciona o intervalo na lista de datas
                     gerenciador.reservaSalaChamada(nomeSala, dtInit, dtFinal);
-
+                    sc.nextLine();
                     System.out.print("Deseja efetuar uma nova reserva? (S - Sim, N - Nao): ");
                     x = sc.nextLine();
+                    System.out.println();
                 }
                 break;
 
@@ -175,17 +185,17 @@ public class Main {
                 for (String x = ""; !x.toUpperCase().equals("N");) {
 
                     System.out.print("Nome da Sala: ");
-                    String nomeSala = sc.nextLine();
+                    String nomeSala = sc.next();
 
                     System.out.print("Data (dd/mm/yyyy): ");
-                    String data = sc.nextLine() + " ";
+                    String data = sc.next() + " ";
 
                     System.out.print("De (hh:mm): ");
-                    String hrInit = sc.nextLine();
+                    String hrInit = sc.next();
                     LocalDateTime dtInit = LocalDateTime.parse(data + hrInit, formatter);
 
                     System.out.print("Até (hh:mm): ");
-                    String hrFinal = sc.nextLine();
+                    String hrFinal = sc.next();
                     LocalDateTime dtFinal = LocalDateTime.parse(data + hrFinal, formatter);
 
                     for (Reserva reserva : gerenciador.reservas) {
@@ -198,28 +208,32 @@ public class Main {
 
                     System.out.print("Cancelar outra reserva? (S - Sim, N - Nao): ");
                     x = sc.nextLine();
+                    System.out.println();
                 }
                 break;
 
             case 5:
                 for (String x = ""; !x.toUpperCase().equals("N");) {
 
-                    System.out.println("Insira o nome da Sala");
-                    String nomeSala = sc.nextLine();
+                    System.out.print("Insira o nome da Sala: ");
+                    String nomeSala = sc.next();
 
                     for (Sala sala : gerenciador.salas) {
                         if (sala.getNome().equals(nomeSala)) {
+                            System.out.println();
                             gerenciador.imprimeReservasDaSala(sala);
+                            System.out.println();
                         }
                     }
 
                     System.out.print("Exibir reservas de outra sala? (S - Sim, N - Nao): ");
-                    x = sc.nextLine();
+                    x = sc.next();
+                    System.out.println();
                 }
                 break;
             default:
                 System.out.println("Opcao invalida");
-                sc.close();
+
             }
 
         }

@@ -35,11 +35,16 @@ class Sala {
         Reserva value = new Reserva(this, dtInit, dtFinal);
 
         for (Reserva reserva : this.reservas) {
-            if (reserva.compareTo(value) == 0) // verifica se nao ha conflito
+            if (reserva.compareTo(value) == 0) { // verifica se nao ha conflito
                 System.out.println("Hora de inicio ou fim conflitantes");
-            return null;
+                return null;
+            }
         }
         this.reservas.add(value);
+        System.out.println("Inseriu? " + this.reservas.contains(value));
+        System.out.println("Sala: " + value.getSala());
+        System.out.println("Inicio: " + value.getDtInit());
+        System.out.println("Fim: " + value.getDtFinal());
         return value;
     }
 
