@@ -11,14 +11,16 @@ class Reserva implements Comparable<Reserva> {
     }
 
     public int compareTo(Reserva reserva) {
-        if (this.dtInit.isEqual(reserva.getDtInit()) || this.dtFinal.isEqual(reserva.getDtFinal())) {
-            return 0;
-        } else if (this.dtInit.isBefore(reserva.getDtInit()) && this.dtFinal.isBefore(reserva.getDtFinal())) {
+
+        if (this.dtInit.isBefore(reserva.getDtInit()) && this.dtFinal.isBefore(reserva.getDtInit())) {
+            // reserva esta antes
             return -1;
-        } else if (this.dtInit.isAfter(reserva.getDtInit()) || this.dtFinal.isAfter(reserva.getDtFinal())) {
+        } else if (this.dtInit.isAfter(reserva.getDtFinal()) || this.dtFinal.isAfter(reserva.getDtFinal())) {
+            // reserva esta depois
             return 1;
         } else {
-            return 2;
+            // reserva esta entre alguma outra ou coincide o inicio ou o fim
+            return 0;
         }
     }
 
