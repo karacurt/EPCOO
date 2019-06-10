@@ -9,7 +9,17 @@ class GerenciadorDeSalas {
 
     // SETTERS
     void adicionaSalaChamada(String nomeSala, int maxCapacity) {
-        this.adicionaSala(new Sala(nomeSala, maxCapacity));
+        boolean isNameFree = true;
+        for (Sala sala : this.salas) {
+            if (sala.getNome().equals(nomeSala))
+                isNameFree = false;
+        }
+        if (isNameFree) {
+            this.adicionaSala(new Sala(nomeSala, maxCapacity));
+            System.out.println("Sala adicionada com sucesso!");
+        } else {
+            System.out.println("Nome da sala já está sendo usado. Por favor escolha outro nome!");
+        }
     }
 
     void adicionaSala(Sala sala) {
@@ -29,13 +39,15 @@ class GerenciadorDeSalas {
                 imprimeReservasDaSala(sala);
                 reserva = sala.reservar(dtInit, dtFinal);
                 imprimeReservasDaSala(sala);
-                System.out.println("Reservou");
+
             }
         }
-        if (reserva == null)
+        if (reserva == null) {
             System.out.println("Horario nao disponivel");
-        else
+        } else {
+            System.out.println("Reservou");
             this.reservas.add(reserva);
+        }
         return reserva;
     }
 
@@ -51,11 +63,16 @@ class GerenciadorDeSalas {
 
     // CONTROLERS
 
-    void cancelaReserva(Reserva value) {
+    boolean cancelaReserva(Reserva value) {
         if (reservas.contains(value)) {
+            System.out.println("Contem reserva");
+
             value.getSala().reservasParaSala().remove(value);
-            reservas.remove(value);
+            System.out.println("removeu das reservas pra sala");
+            // reservas.remove(value);
+            return true;
         }
+        return false;
     }
 
     void imprimeReservasDaSala(Sala sala) {
