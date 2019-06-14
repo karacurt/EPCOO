@@ -41,10 +41,6 @@ class Sala {
             }
         }
         this.reservas.add(value);
-        System.out.println("Inseriu? " + this.reservas.contains(value));
-        System.out.println("Sala: " + value.getSala());
-        System.out.println("Inicio: " + value.getDtInit());
-        System.out.println("Fim: " + value.getDtFinal());
         return value;
     }
 

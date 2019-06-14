@@ -63,29 +63,28 @@ class GerenciadorDeSalas {
 
     // CONTROLERS
 
-    boolean cancelaReserva(Reserva value) {
-        if (reservas.contains(value)) {
-            System.out.println("Contem reserva");
+    boolean cancelaReserva(Reserva reserva) {
 
-            value.getSala().reservasParaSala().remove(value);
-            System.out.println("removeu das reservas pra sala");
-            // reservas.remove(value);
-            return true;
-        }
+        for (Sala sala : this.salas)
+            if (sala.equals(reserva.getSala()) && sala.reservas.contains(reserva) && this.reservas.contains(reserva))
+                if (sala.reservas.remove(reserva) && this.reservas.remove(reserva))
+                    return true;
+
         return false;
     }
 
     void imprimeReservasDaSala(Sala sala) {
+
         int n = 1;
-        System.out.println("*********** SALA  " + sala.getNome() + " **********");
+        System.out.println("\n\n#################### SALA: " + sala.getNome() + " #########################");
         for (Reserva reserva : sala.reservas) {
-            System.out.println("======== RESERVA " + n + " ===========");
+            System.out.println("\n======== RESERVA " + n + " ===========");
             System.out.println("Inicio: " + reserva.getDtInit());
             System.out.println("Termino: " + reserva.getDtFinal());
             n++;
         }
         if (!sala.reservas.iterator().hasNext())
-            System.out.println("Sem reservas");
+            System.out.println("Sem reservas\n");
     }
 
 }

@@ -14,16 +14,20 @@ public class Main {
 
         try {
             for (int op = -1; op != 0;) {
-
-                System.out.println("=============== MENU ================");
-                System.out.println("1 - Marcador de Reuniao");
-                System.out.println("2 - Gerenciador de Salas");
-                System.out.println("0 - Sair");
-                op = sc.nextInt();
+                try {
+                    System.out.println("=============== MENU ================");
+                    System.out.println("1 - Marcador de Reuniao");
+                    System.out.println("2 - Gerenciador de Salas");
+                    System.out.println("0 - Sair");
+                    op = sc.nextInt();
+                    sc.nextLine();
+                } catch (InputMismatchException ex) {
+                    System.out.println("Erro aqui;" + ex);
+                }
 
                 switch (op) {
                 case 0:
-                    System.out.println("Saindo...");
+                    System.exit(0);
                     break;
                 case 1:
                     MarcadorDeReuniao();
@@ -35,11 +39,10 @@ public class Main {
                     System.out.println("Opcao invalida");
                 }
             }
+            sc.close();
         } catch (Exception ex) {
-            System.out.println("Erro! Tipo de dado inserido é inválido. Insira apenas numeros inteiros! ");
+            System.out.println("Erro! " + ex);
         }
-
-        sc.close();
 
     }
 
@@ -128,20 +131,16 @@ public class Main {
                     op = sc.nextInt();
                     sc.nextLine();
                 } catch (InputMismatchException ex) {
-
-                    System.out.println("Erro! Tipo de dado inserido é inválido. Insira apenas numeros inteiros! ");
+                    System.out.println("Erro! Tipo de dado inserido é inválido. Insira apenas numeros inteiros!");
                 }
 
                 switch (op) {
-
-                case 6:
-                    for (Sala sala : gerenciador.salas) {
-                        gerenciador.imprimeReservasDaSala(sala);
-                    }
+                case 0:
+                    System.exit(0);
                     break;
-
-                case 1:
+                case 1: // adicionar sala
                     for (String x = ""; !x.toUpperCase().equals("N");) {
+
                         System.out.print("Insira o nome da Sala: ");
                         String nomeSala = sc.nextLine();
 
@@ -155,7 +154,7 @@ public class Main {
                         System.out.println();
                     }
                     break;
-                case 2:
+                case 2: // remover salas
                     for (String x = ""; !x.toUpperCase().equals("N");) {
 
                         System.out.println("Insira o nome da Sala");
@@ -169,7 +168,7 @@ public class Main {
                     }
                     break;
 
-                case 3:
+                case 3:// reservar sala
 
                     for (String x = ""; !x.toUpperCase().equals("N");) {
 
@@ -200,11 +199,11 @@ public class Main {
                     }
                     break;
 
-                case 4:
+                case 4: // cancelar reserva
                     for (String x = ""; !x.toUpperCase().equals("N");) {
 
                         try {
-                            System.out.print("Nome da Sala: ");
+                            System.out.print("\nNome da Sala: ");
                             String nomeSala = sc.nextLine();
 
                             System.out.print("Data (dd/mm/yyyy): ");
@@ -218,48 +217,46 @@ public class Main {
                             String hrFinal = sc.nextLine();
                             LocalDateTime dtFinal = LocalDateTime.parse(data + hrFinal, formatter);
 
-                            for (Reserva reserva : gerenciador.reservas) {
-
-                                if (gerenciador.cancelaReserva(reserva) && reserva.getSala().getNome().equals(nomeSala)
-                                        && reserva.getDtInit().equals(dtInit) && reserva.getDtFinal().equals(dtFinal))
-                                    System.out.println("Reserva cancelada com sucesso!");
-                                else
-                                    System.out.println("Reserva não cadastrada/encontrada");
-
-                            }
                             if (!gerenciador.reservas.iterator().hasNext())
                                 System.out.println("Não há reservas cadastradas ainda!");
+                            else
+                                for (Reserva reserva : gerenciador.reservas)
+                                    if (reserva.getSala().getNome().equals(nomeSala)
+                                            && reserva.getDtInit().equals(dtInit)
+                                            && reserva.getDtFinal().equals(dtFinal))
+                                        if (gerenciador.cancelaReserva(reserva))
+                                            System.out.println("Reserva cancelada!");
+
                         } catch (DateTimeParseException ex) {
                             System.out.println("Erro! Por favor insira as informções na formatação correta!");
                         }
+
                         System.out.print("Efetuar nova operação? (S - Sim, N - Nao): ");
                         x = sc.nextLine();
-                        System.out.println();
+
                     }
                     break;
 
-                case 5:
+                case 5: // exibir reservas da sala
                     for (String x = ""; !x.toUpperCase().equals("N");) {
 
-                        System.out.print("Insira o nome da Sala: ");
+                        System.out.print("\nInsira o nome da Sala: ");
                         String nomeSala = sc.nextLine();
 
-                        for (Sala sala : gerenciador.salas) {
-                            if (sala.getNome().equals(nomeSala)) {
-                                System.out.println();
+                        for (Sala sala : gerenciador.salas)
+                            if (sala.getNome().equals(nomeSala))
                                 gerenciador.imprimeReservasDaSala(sala);
-                                System.out.println();
-                            }
-                        }
 
                         System.out.print("Exibir reservas de outra sala? (S - Sim, N - Nao): ");
                         x = sc.nextLine();
-                        System.out.println();
                     }
+                    break;
+                case 6: // imprimir salas
+                    for (Sala sala : gerenciador.salas)
+                        gerenciador.imprimeReservasDaSala(sala);
                     break;
                 default:
                     System.out.println("Opcao invalida");
-
                 }
 
             }
