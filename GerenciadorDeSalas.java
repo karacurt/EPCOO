@@ -9,21 +9,26 @@ class GerenciadorDeSalas {
 
     // SETTERS
     void adicionaSalaChamada(String nomeSala, int maxCapacity) {
-        boolean isNameFree = true;
-        for (Sala sala : this.salas) {
-            if (sala.getNome().equals(nomeSala))
-                isNameFree = false;
-        }
-        if (isNameFree) {
-            this.adicionaSala(new Sala(nomeSala, maxCapacity));
+
+        if (this.adicionaSala(new Sala(nomeSala, maxCapacity)))
             System.out.println("Sala adicionada com sucesso!");
-        } else {
+        else
             System.out.println("Nome da sala já está sendo usado. Por favor escolha outro nome!");
-        }
+
     }
 
-    void adicionaSala(Sala sala) {
-        this.salas.add(sala);
+    boolean adicionaSala(Sala value) {
+        boolean isNameFree = true;
+
+        for (Sala sala : this.salas) {
+            if (sala.getNome().equals(value.getNome()))
+                isNameFree = false;
+        }
+
+        if (isNameFree)
+            this.salas.add(value);
+
+        return isNameFree;
     }
 
     // GETTERS
@@ -36,18 +41,19 @@ class GerenciadorDeSalas {
 
         for (Sala sala : this.salas) {
             if (sala.getNome().equals(nomeSala)) {
-                imprimeReservasDaSala(sala);
-                reserva = sala.reservar(dtInit, dtFinal);
-                imprimeReservasDaSala(sala);
-
+                reserva = new Reserva(sala, dtInit, dtFinal);
+                if (sala.reservar(reserva)) {
+                    this.reservas.add(reserva);
+                    System.out.println("Reserva efetuada com sucesso!");
+                } else {
+                    System.out.println("Hora de inicio ou fim conflitantes");
+                }
             }
         }
-        if (reserva == null) {
-            System.out.println("Horario nao disponivel");
-        } else {
-            System.out.println("Reservou");
-            this.reservas.add(reserva);
-        }
+
+        if (reserva == null)
+            System.out.println("Sala nao encontrada!");
+
         return reserva;
     }
 

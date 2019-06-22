@@ -1,6 +1,5 @@
 import java.util.TreeSet;
 import java.util.Collection;
-import java.time.LocalDateTime;
 
 class Sala {
     protected String nome, local, observacoes;
@@ -31,17 +30,14 @@ class Sala {
         return this.capacidade;
     }
 
-    Reserva reservar(LocalDateTime dtInit, LocalDateTime dtFinal) {
-        Reserva value = new Reserva(this, dtInit, dtFinal);
+    boolean reservar(Reserva value) {
 
-        for (Reserva reserva : this.reservas) {
-            if (reserva.compareTo(value) == 0) { // verifica se nao ha conflito
-                System.out.println("Hora de inicio ou fim conflitantes");
-                return null;
-            }
-        }
+        for (Reserva reserva : this.reservas)
+            if (reserva.compareTo(value) == 0) // verifica se nao ha conflito
+                return false;
+
         this.reservas.add(value);
-        return value;
+        return true;
     }
 
     Collection<Reserva> reservasParaSala() {
