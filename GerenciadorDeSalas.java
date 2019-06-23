@@ -1,6 +1,7 @@
 import java.util.List;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 class GerenciadorDeSalas {
@@ -70,13 +71,25 @@ class GerenciadorDeSalas {
     // CONTROLERS
 
     boolean cancelaReserva(Reserva reserva) {
+        Iterator<Reserva> i = this.reservas.iterator();
 
-        for (Sala sala : this.salas)
-            if (sala.equals(reserva.getSala()) && sala.reservas.contains(reserva) && this.reservas.contains(reserva))
-                if (sala.reservas.remove(reserva) && this.reservas.remove(reserva))
-                    return true;
+        for (Sala sala : this.salas) {
+            if (sala.equals(reserva.getSala()) && sala.getReservas().contains(reserva)
+                    && this.reservas.contains(reserva)) {
+
+                while (i.hasNext()) {
+                    if (i.next().equals(reserva)) {
+                        i.remove();
+                        sala.reservas.remove(reserva);
+                        return true;
+                    }
+                }
+
+            }
+        }
 
         return false;
+
     }
 
     void imprimeReservasDaSala(Sala sala) {

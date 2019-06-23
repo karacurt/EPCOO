@@ -12,41 +12,38 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
 
-        try {
-            for (int op = -1; op != 0;) {
-                try {
-                    System.out.println("=============== MENU ================");
-                    System.out.println("1 - Marcador de Reuniao");
-                    System.out.println("2 - Gerenciador de Salas");
-                    System.out.println("0 - Sair");
-                    op = sc.nextInt();
-                    sc.nextLine();
-                } catch (InputMismatchException ex) {
-                    System.out.println("Erro aqui;" + ex);
-                }
+        for (String op = "-1"; !op.equals("0");) {
 
-                switch (op) {
-                case 0:
-                    System.exit(0);
-                    break;
-                case 1:
-                    MarcadorDeReuniao();
-                    break;
-                case 2:
-                    GerenciadorDeSalas();
-                    break;
-                default:
-                    System.out.println("Opcao invalida");
-                }
+            System.out.println("=============== MENU ================");
+            System.out.println("1 - Marcador de Reuniao");
+            System.out.println("2 - Gerenciador de Salas");
+            System.out.println("0 - Sair");
+
+            op = sc.nextLine();
+            // sc.nextLine();
+
+            switch (op) {
+            case "0":
+                System.exit(0);
+                break;
+            case "1":
+                MarcadorDeReuniao();
+                break;
+            case "2":
+                GerenciadorDeSalas();
+                break;
+            default:
+                System.out.println("opcao invalida");
+
             }
-            sc.close();
-        } catch (Exception ex) {
-            System.out.println("Erro! " + ex);
+
         }
+
+        sc.close();
 
     }
 
-    public static void MarcadorDeReuniao() {
+    public static void MarcadorDeReuniao() throws Exception {
 
         // ============= EP parte 1 ==============
 
@@ -55,58 +52,68 @@ public class Main {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("\n======= Defina o intervalo entre datas para reunião (dd/mm/yyyy) =======");
+        try {
+            System.out.println("\n======= Defina o intervalo entre datas para reunião (dd/mm/yyyy) =======");
 
-        System.out.print("De: ");
-        LocalDate dataInicial = LocalDate.parse(sc.nextLine(), formatter);
+            System.out.print("De: ");
+            LocalDate dataInicial = LocalDate.parse(sc.nextLine(), formatter);
 
-        System.out.print("Até: ");
-        LocalDate dataFinal = LocalDate.parse(sc.nextLine(), formatter);
+            System.out.print("Até: ");
+            LocalDate dataFinal = LocalDate.parse(sc.nextLine(), formatter);
 
-        String email = "a";
-        System.out.println("\n====== Insira o email dos participantes (entrada vazia para encerrar) ======");
-        for (int i = 1; !email.equals(""); i++) {
+            String email = "a";
+            System.out.println("\n====== Insira o email dos participantes (entrada vazia para encerrar) ======");
+            for (int i = 1; !email.equals(""); i++) {
 
-            System.out.print("Insira o email do participante " + i + ": ");
-            email = sc.nextLine();
-            if (!email.equals(""))
-                participantes.add(email);
-            else
-                break;
-        }
-        // Marcar reuniao com intervalo de data e participantes
-        marcador.marcarReuniaoEntre(dataInicial, dataFinal, participantes);
-
-        // Intervalo de cada participante
-        for (String participante : participantes) {
-
-            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-            System.out.println("\n====== Insira o horarios livres de " + participante + " ============");
-
-            for (String x = ""; !x.toUpperCase().equals("N");) {
-
-                System.out.print("Data (dd/mm/yyyy): ");
-                String data = sc.nextLine() + " ";
-
-                System.out.print("De (hh:mm): ");
-                String hrInit = sc.nextLine();
-                LocalDateTime dtInit = LocalDateTime.parse(data + hrInit, formatter);
-
-                System.out.print("Até (hh:mm): ");
-                String hrFinal = sc.nextLine();
-                LocalDateTime dtFinal = LocalDateTime.parse(data + hrFinal, formatter);
-
-                // Adiciona o intervalo na lista de datas
-                marcador.indicaDisponibilidadeDe(participante, dtInit, dtFinal);
-
-                System.out.print("Inserir outro horário? (S - Sim, N - Nao): ");
-                x = sc.nextLine();
+                System.out.print("Insira o email do participante " + i + ": ");
+                email = sc.nextLine();
+                if (!email.equals(""))
+                    participantes.add(email);
+                else
+                    break;
             }
+            // Marcar reuniao com intervalo de data e participantes
+            marcador.marcarReuniaoEntre(dataInicial, dataFinal, participantes);
+
+            // Intervalo de cada participante
+            for (String participante : participantes) {
+
+                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+                System.out.println("\n====== Insira o horarios livres de " + participante + " ============");
+
+                for (String x = ""; !x.toUpperCase().equals("N");) {
+                    try {
+                        System.out.print("Data (dd/mm/yyyy): ");
+                        String data = sc.nextLine() + " ";
+
+                        System.out.print("De (hh:mm): ");
+                        String hrInit = sc.nextLine();
+                        LocalDateTime dtInit = LocalDateTime.parse(data + hrInit, formatter);
+
+                        System.out.print("Até (hh:mm): ");
+                        String hrFinal = sc.nextLine();
+                        LocalDateTime dtFinal = LocalDateTime.parse(data + hrFinal, formatter);
+
+                        // Adiciona o intervalo na lista de datas
+                        marcador.indicaDisponibilidadeDe(participante, dtInit, dtFinal);
+
+                        System.out.print("Inserir outro horário? (S - Sim, N - Nao): ");
+                        x = sc.nextLine();
+                    } catch (DateTimeParseException ex) {
+                        System.out.println("Erro! Por favor insira as informções na formatação correta!");
+                    }
+
+                }
+            }
+
+            marcador.mostrarSobreposicao();
+            sc.close();
+
+        } catch (DateTimeParseException ex) {
+            System.out.println("Erro! Por favor insira as informções na formatação correta!");
         }
 
-        marcador.mostrarSobreposicao();
-        sc.close();
     }
 
     public static void GerenciadorDeSalas() throws Exception {
@@ -224,8 +231,10 @@ public class Main {
                                     if (reserva.getSala().getNome().equals(nomeSala)
                                             && reserva.getDtInit().equals(dtInit)
                                             && reserva.getDtFinal().equals(dtFinal))
-                                        if (gerenciador.cancelaReserva(reserva))
+                                        if (gerenciador.cancelaReserva(reserva)) {
                                             System.out.println("Reserva cancelada!");
+                                            break;
+                                        }
 
                         } catch (DateTimeParseException ex) {
                             System.out.println("Erro! Por favor insira as informções na formatação correta!");
@@ -262,7 +271,7 @@ public class Main {
             }
             sc.close();
         } catch (Exception ex) {
-            System.out.println("Erro: " + ex);
+            ex.printStackTrace();
         }
     }
 

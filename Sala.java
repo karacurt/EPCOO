@@ -26,6 +26,10 @@ class Sala {
         return this.observacoes;
     }
 
+    TreeSet<Reserva> getReservas() {
+        return this.reservas;
+    }
+
     int getCapacidade() {
         return this.capacidade;
     }
